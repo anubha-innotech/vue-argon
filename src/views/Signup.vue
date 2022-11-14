@@ -119,7 +119,7 @@
                     class="text-dark font-weight-bolder"
                   >Sign in</a>
                 </p>
-                {{error}}
+                <p v-if="error">{{error}}</p>
               </form>
             </div>
           </div>
@@ -131,23 +131,26 @@
 </template>
 
 <script>
-import {auth} from '../firebase'
+// import {auth} from '../firebase'
 // console.log(auth);
 import Navbar from "@/examples/PageLayout/Navbar.vue";
+// import * as firebase from 'firebase/app';
+import firebase from "firebase";
+// import 'firebase/auth';
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 // import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
-import {
-  createUserWithEmailAndPassword,
-  // signInWithEmailAndPassword,
-  // signOut,
-  // getAuth, 
-  // signInWithPopup, 
-  // GoogleAuthProvider,
-  // TwitterAuthProvider,
-  // GithubAuthProvider
-} from 'firebase/auth'
+// import {
+//   createUserWithEmailAndPassword,
+//   // signInWithEmailAndPassword,
+//   // signOut,
+//   // getAuth, 
+//   // signInWithPopup, 
+//   // GoogleAuthProvider,
+//   // TwitterAuthProvider,
+//   // GithubAuthProvider
+// } from 'firebase/auth'
 const body = document.getElementsByTagName("body")[0];
 
 export default {
@@ -161,7 +164,6 @@ export default {
   },
   data() {
     return {
-      auth,
       // signupForm: {
         name: '',
         email: '',
@@ -171,17 +173,26 @@ export default {
     }
   },
   methods: {
-    async handleSignup() {
-        try {
-          await createUserWithEmailAndPassword(this.email, this.password)
-            .then((userCredential) => {
-              const { email, emailVerified, uid } = userCredential.user;
-              this.$store.dispatch('setUser', { email, emailVerified, uid });
-              // this.$router.push('status');
-            });
-        } catch (error) {
-          this.error = error.message;
+     handleSignup() {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          console.log(user);
+          alert('Success')
+        },
+        (err) => {
+          alert(err)
         }
+      )
+      //   try {
+      //     await createUserWithEmailAndPassword(this.email, this.password)
+      //       .then((userCredential) => {
+      //         const { email, emailVerified, uid } = userCredential.user;
+      //         this.$store.dispatch('setUser', { email, emailVerified, uid });
+      //         // this.$router.push('status');
+      //       });
+      //   } catch (error) {
+      //     this.error = error.message;
+      //   }
       },
   },
   created() {
