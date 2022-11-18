@@ -51,9 +51,9 @@
         </div>
         <div class="row">
           <div class="col-lg-7 mb-lg">
-            <!-- line chart -->
+            <!-- calendar -->
             <div class="card z-index-2">
-              <gradient-line-chart />
+              <calendar />
             </div>
           </div>
           <div class="col-lg-5">
@@ -117,9 +117,10 @@
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+// import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import Carousel from "./components/Carousel.vue";
 import CategoriesCard from "./components/CategoriesCard.vue";
+import Calendar from "@/examples/Calendar.vue";
 
 import US from "@/assets/img/icons/flags/US.png";
 import DE from "@/assets/img/icons/flags/DE.png";
@@ -199,7 +200,8 @@ export default {
   },
   components: {
     Card,
-    GradientLineChart,
+    Calendar,
+    // GradientLineChart,
     Carousel,
     CategoriesCard,
   },

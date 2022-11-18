@@ -95,8 +95,10 @@ export default {
             const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(
                 (userCredential) => {
+                    this.$store.dispatch('setUser');
                     const user = userCredential.user;
                     console.log(user);
+                    this.$router.push({ path:'/dashboard-default' })
                 }).catch((error) => {
                 this.error = error;
             });

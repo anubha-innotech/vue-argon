@@ -81,7 +81,7 @@
                     </div>
                     <div class="card-body">
                         <form role="form">
-                            <argon-input type="text" placeholder="Name" aria-label="Name" v-model="name" />
+                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name" />
                             <input type="email" placeholder="Email" aria-label="Email" v-model="email" />
                             <input type="password" placeholder="Password" aria-label="Password" v-model="password" />
                             <argon-checkbox checked>
@@ -90,12 +90,13 @@
                                     <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
                                 </label>
                             </argon-checkbox>
-                            <argon-alert color="warning" icon="ni ni-like-2 ni-lg" v-if="error" dismissible="true">
+                            <argon-alert color="warning" v-if="error" dismissible="true">
                                 <strong>Error!</strong> {{error}}
                             </argon-alert>
 
                             <div class="text-center">
                                 <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="handleSignup">Sign up</argon-button>
+                                <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="getUser">User?</argon-button>
                             </div>
                             <p class="text-sm mt-3 mb-0">
                                 Already have an account?
@@ -149,13 +150,11 @@ export default {
     },
     data() {
         return {
-            // signupForm: {
             name: '',
             email: '',
             password: '',
-            errorMessage: null,
+            error: null,
             registered: false,
-            // },
         }
     },
     methods: {
@@ -173,7 +172,8 @@ export default {
                     this.email = '';
                     this.password = '';
                 }).catch((error) => {
-                this.errorMessage = error
+                  console.log(error.message);
+                this.error = error.message
             });
         },
         handleSignupWithGoogle() {
@@ -182,7 +182,7 @@ export default {
             const auth = getAuth();
             signInWithPopup(auth, providerGoogle)
                 .then((result) => {
-                    this.registered = true;
+                    // this.registered = true;
                     console.log(result);
                     // This gives you a Google Access Token. You can use it to access the Google API.
                     // const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -193,7 +193,7 @@ export default {
                 }).catch((error) => {
                     // Handle Errors here.
                     // const errorCode = error.code;
-                    this.errorMessage = error.message;
+                    this.error = error.message;
                     // The email of the user's account used.
                     // const email = error.customData.email;
                     // The AuthCredential type that was used.
@@ -207,7 +207,7 @@ export default {
             const auth = getAuth();
             signInWithPopup(auth, providerFacebook)
                 .then((result) => {
-                    this.registered = true;
+                    // this.registered = true;
                     console.log(result);
                     // The signed-in user info.
                     // const user = result.user;
@@ -221,7 +221,7 @@ export default {
                 .catch((error) => {
                     // Handle Errors here.
                     // const errorCode = error.code;
-                    this.errorMessage = error.message;
+                    this.error = error.message;
                     // The email of the user's account used.
                     // const email = error.customData.email;
                     // The AuthCredential type that was used.
@@ -237,7 +237,7 @@ export default {
             signInWithPopup(auth, providerTwitter)
                 .then((result) => {
                     console.log(result);
-                    this.registered = true;
+                    // this.registered = true;
                     // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
                     // You can use these server side with your app's credentials to access the Twitter API.
                     // const credential = TwitterAuthProvider.credentialFromResult(result);
@@ -250,13 +250,17 @@ export default {
                 }).catch((error) => {
                     // Handle Errors here.
                     // const errorCode = error.code;
-                    this.errorMessage = error.message;
+                    this.error = error.message;
                     // The email of the user's account used.
                     // const email = error.customData.email;
                     // The AuthCredential type that was used.
                     // const credential = TwitterAuthProvider.credentialFromError(error);
                     // ...
                 });
+        },
+        getUser() {
+          this.$store.dispatch('setUser');
+          console.log(this.$store.state.user)
         }
     },
     created() {

@@ -43,7 +43,7 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/profile">
+            <router-link class="nav-link me-2" to="/profile" v-if="user">
               <i
                 class="fa fa-user opacity-6 me-1"
                 aria-hidden="true"
@@ -53,7 +53,17 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/signup">
+            <router-link class="nav-link me-2" to="/profile" v-if="user" @click="handleSignout">
+              <i
+                class="fa fa-user opacity-6 me-1"
+                aria-hidden="true"
+                :class="isBlur ? 'text-dark' : 'text-white'"
+              ></i>
+              Sign Out
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link me-2" to="/signup" v-if="!user">
               <i
                 class="fas fa-user-circle opacity-6 me-1"
                 aria-hidden="true"
@@ -63,13 +73,13 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/signin">
+            <router-link class="nav-link me-2" to="/signin" v-if="!user">
               <i
                 class="fas fa-key opacity-6 me-1"
                 aria-hidden="true"
                 :class="isBlur ? 'text-dark' : 'text-white'"
               ></i>
-              Sign In
+              Sign In {{user}}
             </router-link>
           </li>
         </ul>
@@ -98,7 +108,8 @@ export default {
   data() {
     return {
       downArrWhite,
-      downArrBlack
+      downArrBlack,
+      // uid : null,d
     };
   },
   props: {
@@ -115,7 +126,30 @@ export default {
       return {
         "text-dark": this.darkMode
       };
+    },
+    user() {
+      if(this.$store.state.user){
+        // console.log(this.$store.state.user)
+        return true
+      }
+      else {
+        return false
+      }
     }
-  }
-};
+  },
+   methods: {
+     handleSignout() {
+       this.$store.dispatch('handleSignout')
+      //  this.$store.dispatch('setUser');
+      //  console.log(this.$store.state.user)
+    }
+   }
+  // created() {
+  //   console.log("hello");
+  //   console.log(this.user);
+
+  // }
+    // console.log(this.$store.state.user)
+    // this.user = this.$store.state.user
+        }
 </script>

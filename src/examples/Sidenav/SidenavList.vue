@@ -79,7 +79,7 @@
           ACCOUNT PAGES
         </h6>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="user">
         <sidenav-item
           url="/profile"
           :class="getRoute() === 'profile' ? 'active' : ''"
@@ -90,7 +90,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="!user">
         <sidenav-item
           url="/signin"
           :class="getRoute() === 'signin' ? 'active' : ''"
@@ -101,11 +101,22 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="!user">
         <sidenav-item
           url="/signup"
           :class="getRoute() === 'signup' ? 'active' : ''"
           :navText="this.$store.state.isRTL ? 'اشتراك' : 'Sign Up'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-collection text-info text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item" v-if="user">
+        <sidenav-item
+          url="/dashboard-default"
+          :navText="this.$store.state.isRTL ? 'اشتراك' : 'Sign Out'"
+          @click="handleSignout"
         >
           <template v-slot:icon>
             <i class="ni ni-collection text-info text-sm opacity-10"></i>
@@ -146,6 +157,21 @@ export default {
     getRoute() {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
+    },
+    handleSignout() {
+      this.$store.dispatch('handleSignout')
+    }
+  },
+  computed: {
+    user() {
+      // this.$store.dispatch('setUser');
+      if(this.$store.state.user){
+        console.log(this.$store.state.user)
+        return true
+      }
+      else {
+        return false
+      }
     }
   }
 };

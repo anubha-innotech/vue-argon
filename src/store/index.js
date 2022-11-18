@@ -1,4 +1,8 @@
 import { createStore } from "vuex";
+import {
+  getAuth,
+  signOut
+} from 'firebase/auth'
 
 export default createStore({
   state: {
@@ -17,7 +21,7 @@ export default createStore({
     showFooter: true,
     showMain: true,
     layout: "default",
-    user: null
+    user: false
   },
   mutations: {
     toggleConfigurator(state) {
@@ -46,7 +50,7 @@ export default createStore({
         state.isNavFixed = false;
       }
     },
-    SET_USER(state,user) {
+    SET_USER(state, user) {
       state.user = user
     }
   },
@@ -54,10 +58,30 @@ export default createStore({
     toggleSidebarColor({ commit }, payload) {
       commit("sidebarType", payload);
     },
-    setUser({ commit }, user) {
-      commit('SET_USER', user)
+    setUser({ commit }) {
+      // console.log('set user');
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user !== null) {
+        // alert('user')
+      } else {
+        // alert('no user')
+      }
+      commit("SET_USER", user)
     },
-   },
+    handleSignout({ commit }) {
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        // Sign-out successful.
+        // console.log('signout');
+        const user = false
+        commit("SET_USER", user)
+      }).catch((error) => {
+        // An error happened.
+        console.log('signout' + error);
+      });
+    }
+  },
   getters: {
     currentUser(state) {
       return state.user
