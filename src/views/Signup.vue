@@ -81,7 +81,7 @@
                     </div>
                     <div class="card-body">
                         <form role="form">
-                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name" v-on:onFocus="onFocus" v-on:onBlur="onBlur" v-on:updateValue="updateName($event)"/>
+                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name" v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)"/>
                             <input type="email" placeholder="Email" aria-label="Email" v-model="email" />
                             <input type="password" placeholder="Password" aria-label="Password" v-model="password" />
                             <argon-checkbox checked>
@@ -269,6 +269,7 @@ export default {
 
         },
         updateName(updatedValue) {
+            console.log('update va');
             this.name = updatedValue
             console.log(this.name);
         },
