@@ -262,7 +262,10 @@ export default {
           this.$store.dispatch('setUser');
           console.log(this.$store.state.user)
         },
-        focus() {
+        onFocus() {
+
+        },
+        onBlur() {
 
         },
         updateValue(updatedValue) {

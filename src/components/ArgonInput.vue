@@ -57,10 +57,10 @@ export default {
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
     onFocus() {
-      this.$emit('onFocus',)
+      this.$emit('onFocus')
     },
     onBlur() {
-      this.$emit('onBlur',)
+      this.$emit('onBlur')
     },
     updateValue() {
       this.$emit('updateValue',value)
