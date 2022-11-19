@@ -13,7 +13,9 @@
         :value="value"
         :placeholder="placeholder"
         :isRequired="isRequired"
-        :enteredValue="enteredValue"
+        :onBlur="onBlur"
+        :onFocus="onFocus"
+        :updateValue="updateValue"
       />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
@@ -57,10 +59,10 @@ export default {
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
     onFocus() {
-      this.$emit('onFocus')
+      this.$emit('onFocus',value)
     },
     onBlur() {
-      this.$emit('onBlur')
+      this.$emit('onBlur',value)
     },
     updateValue() {
       this.$emit('updateValue',value)
