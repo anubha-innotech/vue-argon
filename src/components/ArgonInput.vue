@@ -13,6 +13,7 @@
         :value="value"
         :placeholder="placeholder"
         :isRequired="isRequired"
+        :enteredValue="enteredValue"
       />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
@@ -41,6 +42,7 @@ export default {
     placeholder: String,
     type: String,
     isRequired: Boolean,
+    entererdValue: String,
   },
   methods: {
     getClasses: (size, valid) => {
@@ -54,6 +56,15 @@ export default {
     },
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
+    onFocus() {
+      this.$emit('onFocus',)
+    },
+    onBlur() {
+      this.$emit('onBlur',)
+    },
+    updateValue() {
+      this.$emit('updateValue',value)
+    }
   },
 };
 </script>

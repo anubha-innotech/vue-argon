@@ -25,7 +25,7 @@
             </div>
             <div class="col-auto my-auto">
               <div class="h-100">
-                <h5 class="mb-1">Sayo Kravits</h5>
+                <h5 class="mb-1">{{user}}</h5>
                 <p class="mb-0 font-weight-bold text-sm">Public Relations</p>
               </div>
             </div>
@@ -329,6 +329,11 @@ export default {
     this.$store.state.showFooter = true;
     this.$store.state.hideConfigButton = false;
     body.classList.remove("profile-overview");
+  },
+  computed: {
+    user() {
+        return this.$store.state.user
+      }
   }
 };
 </script>

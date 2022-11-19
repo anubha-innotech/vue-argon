@@ -166,7 +166,7 @@ export default {
     user() {
       // this.$store.dispatch('setUser');
       if(this.$store.state.user){
-        console.log(this.$store.state.user)
+        // console.log(this.$store.state.user)
         return true
       }
       else {

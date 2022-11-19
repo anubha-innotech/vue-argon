@@ -81,7 +81,7 @@
                     </div>
                     <div class="card-body">
                         <form role="form">
-                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name" />
+                            <argon-input type="text" placeholder="Name" aria-label="Name" :enteredValue="name" v-on:onFocus="onFocus" v-on:onBlur="onBlur" v-on:updateValue="updateValue($event)"/>
                             <input type="email" placeholder="Email" aria-label="Email" v-model="email" />
                             <input type="password" placeholder="Password" aria-label="Password" v-model="password" />
                             <argon-checkbox checked>
@@ -261,6 +261,12 @@ export default {
         getUser() {
           this.$store.dispatch('setUser');
           console.log(this.$store.state.user)
+        },
+        focus() {
+
+        },
+        updateValue(updatedValue) {
+            this.email = updatedValue
         }
     },
     created() {
