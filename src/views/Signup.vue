@@ -96,7 +96,6 @@
 
                             <div class="text-center">
                                 <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="handleSignup" :disabled="!email && !password">Sign up</argon-button>
-                                <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="getUser">User?</argon-button>
                             </div>
                             <p class="text-sm mt-3 mb-0">
                                 Already have an account?
@@ -257,10 +256,6 @@ export default {
                     // const credential = TwitterAuthProvider.credentialFromError(error);
                     // ...
                 });
-        },
-        getUser() {
-          this.$store.dispatch('setUser');
-          console.log(this.$store.state.user)
         },
         onFocus() {
 

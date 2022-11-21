@@ -25,7 +25,7 @@
             </div>
             <div class="col-auto my-auto">
               <div class="h-100">
-                <h5 class="mb-1">{{user}}</h5>
+                <h5 class="mb-1">{{user.email}}</h5>
                 <p class="mb-0 font-weight-bold text-sm">Public Relations</p>
               </div>
             </div>
@@ -222,7 +222,7 @@
                   <label for="example-text-input" class="form-control-label"
                     >Email address</label
                   >
-                  <argon-input type="email" value="jesse@example.com" />
+                  <argon-input type="email"  />
                 </div>
                 <div class="col-md-6">
                   <label for="example-text-input" class="form-control-label"
