@@ -7,9 +7,10 @@ import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
-// import store from "../store/index.js"
 
-const isUserLoggedIn = false
+import store from "@/store"
+
+// const isUserLoggedIn = true;
 const routes = [
   {
     path: "/",
@@ -69,6 +70,7 @@ const router = createRouter({
   linkActiveClass: "active",
 });
 router.beforeEach((to, from, next) => {
+  let isUserLoggedIn = store.state.user
   if(to.meta.needsAuth) {
     if(isUserLoggedIn) {
       next()

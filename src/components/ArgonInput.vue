@@ -9,14 +9,15 @@
         class="form-control"
         :class="getClasses(size, valid)"
         :name="name"
+        :value="inputValue"
         :id="id"
-        :value="value"
         :placeholder="placeholder"
         :isRequired="isRequired"
-        @onBlur="onBlur"
-        @onFocus="onFocus"
+        v-model="inputValue"
+        @input="updateValue"
+        @blur="onBlur"
+        @focus="onFocus"
       />
-      <button @click.prevent="updateValue">Click</button>
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
       </span>
@@ -44,7 +45,11 @@ export default {
     placeholder: String,
     type: String,
     isRequired: Boolean,
-    entererdValue: String,
+  },
+  data() {
+    return {
+      inputValue: '',
+    }
   },
   methods: {
     getClasses: (size, valid) => {
@@ -58,16 +63,17 @@ export default {
     },
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
-    onFocus() {
-      console.log('argun input');
-      this.$emit('on-focus',this.value)
-    },
-    onBlur() {
-      this.$emit('on-blur',this.value)
-    },
+    // onFocus() {
+    //   console.log('argun input');
+    //   this.$emit('on-focus',this.value)
+    // },
+    // onBlur() {
+    //   console.log('on blur')
+    //   this.$emit('on-blur',this.value)
+    // },
     updateValue() {
-      console.log(this.value);
-      // this.$emit('update-value',this.value)
+      // console.log(this.inputValue);
+      this.$emit('update-value',this.inputValue)
     }
   },
 };

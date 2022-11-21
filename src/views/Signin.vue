@@ -20,10 +20,10 @@
                             <div class="card-body">
                                 <form role="form">
                                     <div class="mb-3">
-                                        <input type="email" placeholder="Email" name="email" size="lg" v-model="email" />
+                                        <argon-input type="email" placeholder="Email" name="email" size="lg" v-on:update-value="updateEmail($event)" />
                                     </div>
                                     <div class="mb-3">
-                                        <input type="password" placeholder="Password" name="password" size="lg" v-model="password" />
+                                        <argon-input type="password" placeholder="Password" name="password" size="lg" v-on:update-value="updatePassword($event)" />
                                     </div>
                                     <argon-switch id="rememberMe">Remember me</argon-switch>
 
@@ -58,7 +58,7 @@
 
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
-// import ArgonInput from "@/components/ArgonInput.vue";
+import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import {
@@ -85,7 +85,7 @@ export default {
     },
     components: {
         Navbar,
-        // ArgonInput,
+        ArgonInput,
         ArgonSwitch,
         ArgonButton,
     },
@@ -102,6 +102,12 @@ export default {
                 }).catch((error) => {
                 this.error = error;
             });
+        },
+        updateEmail(updatedValue) {
+            this.email  = updatedValue
+        },
+        updatePassword(updatedValue) {
+            this.password = updatedValue
         }
     },
     created() {

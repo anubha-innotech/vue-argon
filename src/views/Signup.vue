@@ -81,9 +81,9 @@
                     </div>
                     <div class="card-body">
                         <form role="form">
-                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name"  v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)"/>
-                            <input type="email" placeholder="Email" aria-label="Email" v-model="email" />
-                            <input type="password" placeholder="Password" aria-label="Password" v-model="password" />
+                            <argon-input type="text" placeholder="Name" aria-label="Name" v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)" />
+                            <argon-input type="email" placeholder="Email" aria-label="Email" v-on:update-value="updateEmail($event)" />
+                            <argon-input type="password" placeholder="Password" aria-label="Password" v-on:update-value="updateEmail($event)" />
                             <argon-checkbox checked>
                                 <label class="form-check-label" for="flexCheckDefault">
                                     I agree the
@@ -269,17 +269,17 @@ export default {
 
         },
         updateName(updatedValue) {
-            console.log('update va');
+            // console.log('update name');
             this.name = updatedValue
-            console.log(this.name);
+            // console.log(this.name);
         },
         updateEmail(updatedValue) {
             this.email  = updatedValue
-            console.log(this.email);
+            // console.log(this.email);
         },
         updatePassword(updatedValue) {
             this.password = updatedValue
-            console.log(this.password);
+            // console.log(this.password);
         }
     },
     created() {

@@ -79,7 +79,7 @@
                 aria-hidden="true"
                 :class="isBlur ? 'text-dark' : 'text-white'"
               ></i>
-              Sign In {{user}}
+              Sign In
             </router-link>
           </li>
         </ul>
