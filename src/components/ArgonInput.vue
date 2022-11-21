@@ -15,8 +15,8 @@
         :isRequired="isRequired"
         @onBlur="onBlur"
         @onFocus="onFocus"
-        @updateValue="updateValue"
       />
+      <button @click.prevent="updateValue">Click</button>
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
       </span>
@@ -59,13 +59,15 @@ export default {
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
     onFocus() {
+      console.log('argun input');
       this.$emit('on-focus',this.value)
     },
     onBlur() {
       this.$emit('on-blur',this.value)
     },
     updateValue() {
-      this.$emit('update-value',this.value)
+      console.log(this.value);
+      // this.$emit('update-value',this.value)
     }
   },
 };

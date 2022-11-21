@@ -81,7 +81,7 @@
                     </div>
                     <div class="card-body">
                         <form role="form">
-                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name" v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)"/>
+                            <argon-input type="text" placeholder="Name" aria-label="Name" :value="name"  v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)"/>
                             <input type="email" placeholder="Email" aria-label="Email" v-model="email" />
                             <input type="password" placeholder="Password" aria-label="Password" v-model="password" />
                             <argon-checkbox checked>
@@ -95,7 +95,7 @@
                             </argon-alert>
 
                             <div class="text-center">
-                                <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="handleSignup">Sign up</argon-button>
+                                <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="handleSignup" :disabled="!email && !password">Sign up</argon-button>
                                 <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="getUser">User?</argon-button>
                             </div>
                             <p class="text-sm mt-3 mb-0">

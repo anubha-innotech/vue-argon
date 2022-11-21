@@ -7,7 +7,9 @@ import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
+// import store from "../store/index.js"
 
+const isUserLoggedIn = false
 const routes = [
   {
     path: "/",
@@ -43,6 +45,9 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile,
+    meta: {
+      needsAuth: true
+    }
   },
   {
     path: "/signin",
@@ -63,5 +68,15 @@ const router = createRouter({
   routes,
   linkActiveClass: "active",
 });
-
+router.beforeEach((to, from, next) => {
+  if(to.meta.needsAuth) {
+    if(isUserLoggedIn) {
+      next()
+    } else {
+      next("/signin");
+    }
+  } else {
+    next();
+  }
+})
 export default router;
