@@ -54,7 +54,7 @@
         </div>
     </section>
 </main>
-<spinner v-if="showLoading"/>
+<spinner v-if="showLoading" />
 </template>
 
 <script>
@@ -65,14 +65,8 @@ import ArgonButton from "@/components/ArgonButton.vue";
 import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
-    // createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    // signOut,
-    // getAuth, 
-    // signInWithPopup, 
-    // GoogleAuthProvider,
-    // TwitterAuthProvider,
-    // GithubAuthProvider
+
 } from 'firebase/auth'
 const body = document.getElementsByTagName("body")[0];
 
@@ -83,6 +77,7 @@ export default {
             error: null,
             email: '',
             password: '',
+            showLoading: false
         }
     },
     components: {
@@ -92,15 +87,10 @@ export default {
         ArgonButton,
         Spinner
     },
-    computed: {
-    showLoading() {
-      return this.$store.state.showLoading;
-    }
-    },
+    computed: {},
     methods: {
         handleSignin() {
-            // this.$store.commit('showLoader',true)
-            this.$store.state.showLoading = true
+            this.showLoading = true;
             console.log(this.$store.state.showLoading);
             this.error = null;
             const auth = getAuth();
@@ -109,19 +99,17 @@ export default {
                 () => {
                     this.$store.dispatch('setUser');
                     // const user = userCredential.user;
-                    this.$router.push({ path:'/dashboard-default' })
+                    this.$router.push({
+                        path: '/dashboard-default'
+                    })
+                    this.showLoading = false;
                 }).catch((error) => {
-                    // this.$store.commit('showLoader',false)
-                    this.$store.state.showLoading = false
+                this.showLoading = false;
                 this.error = error;
             });
-            // this.$store.commit('showLoader',false)
-            this.$store.state.showLoading = false
-
-
         },
         updateEmail(updatedValue) {
-            this.email  = updatedValue
+            this.email = updatedValue
         },
         updatePassword(updatedValue) {
             this.password = updatedValue
@@ -141,7 +129,6 @@ export default {
         this.$store.state.showFooter = true;
         body.classList.add("bg-gray-100");
     },
-   
-};
 
+};
 </script>

@@ -124,13 +124,9 @@ import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    // signInWithEmailAndPassword,
-    // signOut,
-    // getAuth, 
     signInWithPopup,
     GoogleAuthProvider,
     TwitterAuthProvider,
-    // GithubAuthProvider,
     FacebookAuthProvider
 } from 'firebase/auth'
 const body = document.getElementsByTagName("body")[0];
@@ -157,17 +153,13 @@ export default {
             password: '',
             error: null,
             registered: false,
+            showLoading: false,
         }
     },
-    computed: {
-        showLoading() {
-            return this.$store.state.showLoading;
-        }
-    },
+    computed: {},
     methods: {
         handleSignup() {
-            this.$store.state.showLoading = true
-            console.log(this.$store.state.showLoading)
+            this.showLoading = true
             this.error = null;
             this.registered = false;
             const auth = getAuth();
@@ -180,12 +172,11 @@ export default {
                     this.name = '';
                     this.email = '';
                     this.password = '';
+                    this.showLoading = false
                 }).catch((error) => {
+                this.showLoading = false
                 this.error = error.message
-                // this.$store.state.showLoading = false
             });
-            // this.$store.state.showLoading = false
-
         },
         handleSignupWithGoogle() {
             this.error = null;

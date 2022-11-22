@@ -72,7 +72,6 @@ export default {
         return {
             downArrWhite,
             downArrBlack,
-            // uid : null,d
         };
     },
     props: {

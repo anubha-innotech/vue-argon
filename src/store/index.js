@@ -23,7 +23,6 @@ export default createStore({
     showMain: true,
     layout: "default",
     user: false,
-    showLoading: false
   },
   mutations: {
     toggleConfigurator(state) {
