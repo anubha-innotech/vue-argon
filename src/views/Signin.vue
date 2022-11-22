@@ -54,6 +54,7 @@
         </div>
     </section>
 </main>
+<spinner v-if="showLoading"/>
 </template>
 
 <script>
@@ -61,6 +62,7 @@ import Navbar from "@/examples/PageLayout/Navbar.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
     // createUserWithEmailAndPassword,
@@ -88,20 +90,35 @@ export default {
         ArgonInput,
         ArgonSwitch,
         ArgonButton,
+        Spinner
+    },
+    computed: {
+    showLoading() {
+      return this.$store.state.showLoading;
+    }
     },
     methods: {
         handleSignin() {
+            // this.$store.commit('showLoader',true)
+            this.$store.state.showLoading = true
+            console.log(this.$store.state.showLoading);
             this.error = null;
             const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(
-                (userCredential) => {
+                // (userCredential) => {
+                () => {
                     this.$store.dispatch('setUser');
-                    const user = userCredential.user;
-                    console.log(user);
+                    // const user = userCredential.user;
                     this.$router.push({ path:'/dashboard-default' })
                 }).catch((error) => {
+                    // this.$store.commit('showLoader',false)
+                    this.$store.state.showLoading = false
                 this.error = error;
             });
+            // this.$store.commit('showLoader',false)
+            this.$store.state.showLoading = false
+
+
         },
         updateEmail(updatedValue) {
             this.email  = updatedValue
@@ -124,5 +141,7 @@ export default {
         this.$store.state.showFooter = true;
         body.classList.add("bg-gray-100");
     },
+   
 };
+
 </script>

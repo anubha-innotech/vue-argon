@@ -76,5 +76,8 @@ export default {
       this.$emit('update-value',this.inputValue)
     }
   },
+  created() {
+    this.inputValue = this.value
+  }
 };
 </script>

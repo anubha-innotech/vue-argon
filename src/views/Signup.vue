@@ -109,6 +109,7 @@
     </div>
 </main>
 <app-footer />
+<spinner v-if="showLoading" />
 </template>
 
 <script>
@@ -119,6 +120,7 @@ import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import ArgonAlert from "@/components/ArgonAlert.vue";
 import ArgonSocialButton from "@/components/ArgonSocialButton.vue";
+import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -145,7 +147,8 @@ export default {
         ArgonCheckbox,
         ArgonButton,
         ArgonAlert,
-        ArgonSocialButton
+        ArgonSocialButton,
+        Spinner
     },
     data() {
         return {
@@ -156,8 +159,15 @@ export default {
             registered: false,
         }
     },
+    computed: {
+        showLoading() {
+            return this.$store.state.showLoading;
+        }
+    },
     methods: {
         handleSignup() {
+            this.$store.state.showLoading = true
+            console.log(this.$store.state.showLoading)
             this.error = null;
             this.registered = false;
             const auth = getAuth();
@@ -171,9 +181,11 @@ export default {
                     this.email = '';
                     this.password = '';
                 }).catch((error) => {
-                  console.log(error.message);
                 this.error = error.message
+                // this.$store.state.showLoading = false
             });
+            // this.$store.state.showLoading = false
+
         },
         handleSignupWithGoogle() {
             this.error = null;
@@ -269,7 +281,7 @@ export default {
             // console.log(this.name);
         },
         updateEmail(updatedValue) {
-            this.email  = updatedValue
+            this.email = updatedValue
             // console.log(this.email);
         },
         updatePassword(updatedValue) {

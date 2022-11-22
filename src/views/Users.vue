@@ -2,23 +2,26 @@
 <div class="py-4 container-fluid">
     <div class=" row">
         <div class="col-12">
-            <authors-table />
+            <users-table />
         </div>
     </div>
 </div>
 <button @click="listAllUsers()">users</button>
+<spinner/>
 </template>
 
   
 <script>
-import AuthorsTable from "./components/UsersTable.vue";
+import UsersTable from "./components/UsersTable.vue";
+import Spinner from "./components/Spinner.vue";
 import {
     getAuth
 } from 'firebase/auth'
 export default {
     name: "tables",
     components: {
-        AuthorsTable,
+        UsersTable,
+        Spinner
     },
     data() {
         return {
@@ -49,22 +52,27 @@ export default {
         };
     },
     methods: {
-        listAllUsers(nextPageToken) {
+        async listAllUsers(nextPageToken) {
+            console.log(getAuth())
+            console.log(getAuth().listUsers)
+            const auth = getAuth();
+            console.log(auth);
+            console.log(auth.listUsers);
             // List batch of users, 1000 at a time.
-            getAuth()
+            await auth
                 .listUsers(1000, nextPageToken)
-                .then((listUsersResult) => {
+                ((listUsersResult) => {
                     listUsersResult.users.forEach((userRecord) => {
                         console.log('user', userRecord.toJSON());
                     });
-                    if (listUsersResult.pageToken) {
+                 if (listUsersResult.pageToken) {
                         // List next batch of users.
                         // listAllUsers(listUsersResult.pageToken);
                     }
                 })
-                .catch((error) => {
-                    console.log('Error listing users:', error);
-                });
+                // catch((error) => {
+                //     console.log('Error listing users:', error);
+                // });
         }
     }
 };

@@ -3,6 +3,7 @@ import {
   getAuth,
   signOut
 } from 'firebase/auth'
+import router from '../router'
 
 export default createStore({
   state: {
@@ -21,7 +22,8 @@ export default createStore({
     showFooter: true,
     showMain: true,
     layout: "default",
-    user: false
+    user: false,
+    showLoading: false
   },
   mutations: {
     toggleConfigurator(state) {
@@ -52,6 +54,10 @@ export default createStore({
     },
     SET_USER(state, user) {
       state.user = user
+    },
+    showLoader(state,payload) {
+      console.log("show loader mutations");
+      state.showLoading = payload;
     }
   },
   actions: {
@@ -59,14 +65,11 @@ export default createStore({
       commit("sidebarType", payload);
     },
     setUser({ commit }) {
-      // console.log('set user');
       const auth = getAuth();
       const user = auth.currentUser;
-      if (user !== null) {
-        // alert('user')
-      } else {
-        // alert('no user')
-      }
+      // if (user !== null) {
+      // } else {
+      // }
       commit("SET_USER", user)
     },
     handleSignout({ commit }) {
@@ -76,6 +79,7 @@ export default createStore({
         // console.log('signout');
         const user = false
         commit("SET_USER", user)
+        router.push({ path:'/signin' })
       }).catch((error) => {
         // An error happened.
         console.log('signout' + error);
