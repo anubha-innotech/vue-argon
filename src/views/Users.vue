@@ -7,13 +7,11 @@
     </div>
 </div>
 <button @click="listAllUsers()">users</button>
-<spinner/>
 </template>
 
   
 <script>
 import UsersTable from "./components/UsersTable.vue";
-import Spinner from "./components/Spinner.vue";
 import {
     getAuth
 } from 'firebase/auth'
@@ -21,7 +19,6 @@ export default {
     name: "tables",
     components: {
         UsersTable,
-        Spinner
     },
     data() {
         return {
@@ -52,28 +49,48 @@ export default {
         };
     },
     methods: {
-        async listAllUsers(nextPageToken) {
-            console.log(getAuth())
-            console.log(getAuth().listUsers)
-            const auth = getAuth();
-            console.log(auth);
-            console.log(auth.listUsers);
-            // List batch of users, 1000 at a time.
-            await auth
-                .listUsers(1000, nextPageToken)
-                ((listUsersResult) => {
-                    listUsersResult.users.forEach((userRecord) => {
-                        console.log('user', userRecord.toJSON());
-                    });
-                 if (listUsersResult.pageToken) {
-                        // List next batch of users.
-                        // listAllUsers(listUsersResult.pageToken);
-                    }
-                })
-                // catch((error) => {
-                //     console.log('Error listing users:', error);
-                // });
-        }
+        // async listAllUsers(nextPageToken) {
+        //     console.log(getAuth())
+        //     console.log(getAuth().listUsers)
+        //     const auth = getAuth();
+        //     console.log(auth);
+        //     console.log(auth.listUsers);
+        //     // List batch of users, 1000 at a time.
+        //     await auth
+        //         .listUsers(1000, nextPageToken)
+        //         ((listUsersResult) => {
+        //             listUsersResult.users.forEach((userRecord) => {
+        //                 console.log('user', userRecord.toJSON());
+        //             });
+        //          if (listUsersResult.pageToken) {
+        //                 // List next batch of users.
+        //                 // listAllUsers(listUsersResult.pageToken);
+        //             }
+        //         })
+        //         // catch((error) => {
+        //         //     console.log('Error listing users:', error);
+        //         // });
+        // }
+
+    listAllUsers(nextPageToken) {
+        console.log(getAuth());
+        console.log(getAuth.listUsers);
+  // List batch of users, 1000 at a time.
+  getAuth()
+    .listUsers(1000, nextPageToken)
+    .then((listUsersResult) => {
+      listUsersResult.users.forEach((userRecord) => {
+        console.log('user', userRecord.toJSON());
+      });
+      if (listUsersResult.pageToken) {
+        // List next batch of users.
+        // listAllUsers(listUsersResult.pageToken);
+      }
+    })
+    .catch((error) => {
+      console.log('Error listing users:', error);
+    });
+}
     }
 };
 </script>

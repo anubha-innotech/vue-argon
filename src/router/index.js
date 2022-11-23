@@ -11,7 +11,6 @@ import Users from "../views/Users.vue";
 
 import store from "@/store"
 
-// const isUserLoggedIn = true;
 const routes = [
   {
     path: "/",
