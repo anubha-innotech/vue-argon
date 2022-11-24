@@ -73,24 +73,25 @@ export default {
         // }
 
     listAllUsers(nextPageToken) {
-        console.log(getAuth());
-        console.log(getAuth.listUsers);
+        // console.log(getAuth());
+        // console.log(getAuth.listUsers);
   // List batch of users, 1000 at a time.
   getAuth()
     .listUsers(1000, nextPageToken)
     .then((listUsersResult) => {
-      listUsersResult.users.forEach((userRecord) => {
-        console.log('user', userRecord.toJSON());
-      });
-      if (listUsersResult.pageToken) {
+        console.log(listUsersResult)
+    //   listUsersResult.users.forEach((userRecord) => {
+        // console.log('user', userRecord.toJSON());
+    //   });
+    //   if (listUsersResult.pageToken) {
         // List next batch of users.
         // listAllUsers(listUsersResult.pageToken);
-      }
+    //   }
     })
     .catch((error) => {
       console.log('Error listing users:', error);
     });
 }
     }
-};
+}
 </script>
