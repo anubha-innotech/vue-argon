@@ -63,6 +63,17 @@
           </template>
         </sidenav-item>
       </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/users"
+          :class="getRoute() === 'rtl-page' ? 'active' : ''"
+          navText="Users"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
       <li class="mt-3 nav-item">
         <h6
           v-if="this.$store.state.isRTL"
@@ -79,7 +90,7 @@
           ACCOUNT PAGES
         </h6>
       </li>
-      <li class="nav-item" v-if="user">
+      <li class="nav-item">
         <sidenav-item
           url="/profile"
           :class="getRoute() === 'profile' ? 'active' : ''"
@@ -90,29 +101,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item" v-if="!user">
-        <sidenav-item
-          url="/signin"
-          :class="getRoute() === 'signin' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'تسجيل الدخول' : 'Sign In'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-single-copy-04 text-danger text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="nav-item" v-if="!user">
-        <sidenav-item
-          url="/signup"
-          :class="getRoute() === 'signup' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'اشتراك' : 'Sign Up'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-collection text-info text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="nav-item" v-if="user">
+      <li class="nav-item">
         <sidenav-item
           url="/dashboard-default"
           :navText="this.$store.state.isRTL ? 'اشتراك' : 'Sign Out'"
@@ -163,16 +152,7 @@ export default {
     }
   },
   computed: {
-    user() {
-      // this.$store.dispatch('setUser');
-      if(this.$store.state.user){
-        // console.log(this.$store.state.user)
-        return true
-      }
-      else {
-        return false
-      }
-    }
-  }
+
+  } 
 };
 </script>

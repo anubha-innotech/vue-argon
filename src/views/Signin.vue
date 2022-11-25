@@ -54,6 +54,7 @@
         </div>
     </section>
 </main>
+<spinner v-if="showLoading" />
 </template>
 
 <script>
@@ -61,16 +62,10 @@ import Navbar from "@/examples/PageLayout/Navbar.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
-    // createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    // signOut,
-    // getAuth, 
-    // signInWithPopup, 
-    // GoogleAuthProvider,
-    // TwitterAuthProvider,
-    // GithubAuthProvider
 } from 'firebase/auth'
 const body = document.getElementsByTagName("body")[0];
 
@@ -81,6 +76,7 @@ export default {
             error: null,
             email: '',
             password: '',
+            showLoading: false
         }
     },
     components: {
@@ -88,23 +84,30 @@ export default {
         ArgonInput,
         ArgonSwitch,
         ArgonButton,
+        Spinner
     },
+    computed: {},
     methods: {
         handleSignin() {
+            this.showLoading = true;
             this.error = null;
             const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(
-                (userCredential) => {
+                // (userCredential) => {
+                () => {
                     this.$store.dispatch('setUser');
-                    const user = userCredential.user;
-                    console.log(user);
-                    this.$router.push({ path:'/dashboard-default' })
+                    // const user = userCredential.user;
+                    this.$router.push({
+                        path: '/dashboard-default'
+                    })
+                    this.showLoading = false;
                 }).catch((error) => {
+                this.showLoading = false;
                 this.error = error;
             });
         },
         updateEmail(updatedValue) {
-            this.email  = updatedValue
+            this.email = updatedValue
         },
         updatePassword(updatedValue) {
             this.password = updatedValue
@@ -124,5 +127,6 @@ export default {
         this.$store.state.showFooter = true;
         body.classList.add("bg-gray-100");
     },
+
 };
 </script>

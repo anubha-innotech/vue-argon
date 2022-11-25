@@ -72,9 +72,11 @@ export default {
     //   this.$emit('on-blur',this.value)
     // },
     updateValue() {
-      // console.log(this.inputValue);
       this.$emit('update-value',this.inputValue)
     }
   },
+  created() {
+    this.inputValue = this.value
+  }
 };
 </script>

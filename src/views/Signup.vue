@@ -41,26 +41,7 @@
                                 </svg>
                             </a>
                         </div>
-                        <!-- <div class="col-3 px-1"> -->
                         <argon-social-button icon="fab fa-twitter-square" socialBtn="twitter" iconOnly="true" size="lg" @click.prevent="handleSignupWithTwitter" />
-                        <!-- <a class="btn btn-outline-light w-100" href="javascript:;" @click.prevent="handleSignupWithTwitter"> -->
-                        <!-- <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1"> -->
-
-                        <!-- <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> -->
-                        <!-- <g
-                        transform="translate(7.000000, 0.564551)"
-                        fill="#000000"
-                        fill-rule="nonzero"
-                      > -->
-                        <!-- <path
-                          d="M40.9233048,32.8428307 C41.0078713,42.0741676 48.9124247,45.146088 49,45.1851909 C48.9331634,45.4017274 47.7369821,49.5628653 44.835501,53.8610269 C42.3271952,57.5771105 39.7241148,61.2793611 35.6233362,61.356042 C31.5939073,61.431307 30.2982233,58.9340578 25.6914424,58.9340578 C21.0860585,58.9340578 19.6464932,61.27947 15.8321878,61.4314159 C11.8738936,61.5833617 8.85958554,57.4131833 6.33064852,53.7107148 C1.16284874,46.1373849 -2.78641926,32.3103122 2.51645059,22.9768066 C5.15080028,18.3417501 9.85858819,15.4066355 14.9684701,15.3313705 C18.8554146,15.2562145 22.5241194,17.9820905 24.9003639,17.9820905 C27.275104,17.9820905 31.733383,14.7039812 36.4203248,15.1854154 C38.3824403,15.2681959 43.8902255,15.9888223 47.4267616,21.2362369 C47.1417927,21.4153043 40.8549638,25.1251794 40.9233048,32.8428307 M33.3504628,10.1750144 C35.4519466,7.59650964 36.8663676,4.00699306 36.4804992,0.435448578 C33.4513624,0.558856931 29.7884601,2.48154382 27.6157341,5.05863265 C25.6685547,7.34076135 23.9632549,10.9934525 24.4233742,14.4943068 C27.7996959,14.7590956 31.2488715,12.7551531 33.3504628,10.1750144"
-                        /> -->
-
-                        <!-- </g> -->
-                        <!-- </g> -->
-                        <!-- </svg> -->
-                        <!-- </a> -->
-                        <!-- </div> -->
                         <div class="col-3 me-auto px-1">
                             <a class="btn btn-outline-light w-100" href="javascript:;" @click.prevent="handleSignupWithGoogle">
                                 <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
@@ -83,7 +64,7 @@
                         <form role="form">
                             <argon-input type="text" placeholder="Name" aria-label="Name" v-on:on-focus="onFocus" v-on:on-blur="onBlur" v-on:update-value="updateName($event)" />
                             <argon-input type="email" placeholder="Email" aria-label="Email" v-on:update-value="updateEmail($event)" />
-                            <argon-input type="password" placeholder="Password" aria-label="Password" v-on:update-value="updateEmail($event)" />
+                            <argon-input type="password" placeholder="Password" aria-label="Password" v-on:update-value="updatePassword($event)" />
                             <argon-checkbox checked>
                                 <label class="form-check-label" for="flexCheckDefault">
                                     I agree the
@@ -96,7 +77,6 @@
 
                             <div class="text-center">
                                 <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="handleSignup" :disabled="!email && !password">Sign up</argon-button>
-                                <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2" @click.prevent="getUser">User?</argon-button>
                             </div>
                             <p class="text-sm mt-3 mb-0">
                                 Already have an account?
@@ -110,6 +90,7 @@
     </div>
 </main>
 <app-footer />
+<spinner v-if="showLoading" />
 </template>
 
 <script>
@@ -120,18 +101,21 @@ import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import ArgonAlert from "@/components/ArgonAlert.vue";
 import ArgonSocialButton from "@/components/ArgonSocialButton.vue";
+import Spinner from "./components/Spinner.vue";
+import {
+    getFirestore,
+    collection,
+    addDoc
+} from "firebase/firestore";
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    // signInWithEmailAndPassword,
-    // signOut,
-    // getAuth, 
     signInWithPopup,
     GoogleAuthProvider,
     TwitterAuthProvider,
-    // GithubAuthProvider,
     FacebookAuthProvider
 } from 'firebase/auth'
+
 const body = document.getElementsByTagName("body")[0];
 const providerGoogle = new GoogleAuthProvider();
 const providerFacebook = new FacebookAuthProvider();
@@ -146,7 +130,8 @@ export default {
         ArgonCheckbox,
         ArgonButton,
         ArgonAlert,
-        ArgonSocialButton
+        ArgonSocialButton,
+        Spinner
     },
     data() {
         return {
@@ -155,24 +140,43 @@ export default {
             password: '',
             error: null,
             registered: false,
+            showLoading: false,
         }
     },
+    computed: {},
     methods: {
         handleSignup() {
+            this.showLoading = true
             this.error = null;
             this.registered = false;
             const auth = getAuth();
-            console.log(this.name, this.email);
-            createUserWithEmailAndPassword(auth, this.email, this.password).then(
-                (userCredential) => {
+            // console.log(this.name, this.email);
+             createUserWithEmailAndPassword(auth, this.email, this.password).then(
+                async (userCredential) => {
                     const user = userCredential.user;
                     console.log(user.uid);
                     this.registered = true;
+                    const db = getFirestore()
+                    // Add a new document in collection "users"
+                    try {
+                        const docRef = await addDoc(collection(db, "users"), {
+                            name: this.name,
+                            email: this.email,
+                            password: this.password,
+                            uid: user.uid,
+                            role: "user",
+                            joined: new Date(),
+                        });
+                        console.log("Document written with ID: ", docRef.id);
+                    } catch (e) {
+                        console.error("Error adding document: ", e);
+                    }
                     this.name = '';
                     this.email = '';
                     this.password = '';
+                    this.showLoading = false;
                 }).catch((error) => {
-                  console.log(error.message);
+                this.showLoading = false
                 this.error = error.message
             });
         },
@@ -182,23 +186,9 @@ export default {
             const auth = getAuth();
             signInWithPopup(auth, providerGoogle)
                 .then((result) => {
-                    // this.registered = true;
                     console.log(result);
-                    // This gives you a Google Access Token. You can use it to access the Google API.
-                    // const credential = GoogleAuthProvider.credentialFromResult(result);
-                    // const token = credential.accessToken;
-                    // The signed-in user info.
-                    // const user = result.user;
-                    // ...
                 }).catch((error) => {
-                    // Handle Errors here.
-                    // const errorCode = error.code;
                     this.error = error.message;
-                    // The email of the user's account used.
-                    // const email = error.customData.email;
-                    // The AuthCredential type that was used.
-                    // const credential = GoogleAuthProvider.credentialFromError(error);
-                    // ...
                 });
         },
         handleSignupWithFacebook() {
@@ -207,27 +197,10 @@ export default {
             const auth = getAuth();
             signInWithPopup(auth, providerFacebook)
                 .then((result) => {
-                    // this.registered = true;
                     console.log(result);
-                    // The signed-in user info.
-                    // const user = result.user;
-
-                    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-                    // const credential = FacebookAuthProvider.credentialFromResult(result);
-                    // const accessToken = credential.accessToken;
-
-                    // ...
                 })
                 .catch((error) => {
-                    // Handle Errors here.
-                    // const errorCode = error.code;
                     this.error = error.message;
-                    // The email of the user's account used.
-                    // const email = error.customData.email;
-                    // The AuthCredential type that was used.
-                    // const credential = FacebookAuthProvider.credentialFromError(error);
-
-                    // ...
                 });
         },
         handleSignupWithTwitter() {
@@ -237,30 +210,9 @@ export default {
             signInWithPopup(auth, providerTwitter)
                 .then((result) => {
                     console.log(result);
-                    // this.registered = true;
-                    // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
-                    // You can use these server side with your app's credentials to access the Twitter API.
-                    // const credential = TwitterAuthProvider.credentialFromResult(result);
-                    // const token = credential.accessToken;
-                    // const secret = credential.secret;
-
-                    // The signed-in user info.
-                    // const user = result.user;
-                    // ...
                 }).catch((error) => {
-                    // Handle Errors here.
-                    // const errorCode = error.code;
                     this.error = error.message;
-                    // The email of the user's account used.
-                    // const email = error.customData.email;
-                    // The AuthCredential type that was used.
-                    // const credential = TwitterAuthProvider.credentialFromError(error);
-                    // ...
                 });
-        },
-        getUser() {
-          this.$store.dispatch('setUser');
-          console.log(this.$store.state.user)
         },
         onFocus() {
 
@@ -269,17 +221,13 @@ export default {
 
         },
         updateName(updatedValue) {
-            // console.log('update name');
             this.name = updatedValue
-            // console.log(this.name);
         },
         updateEmail(updatedValue) {
-            this.email  = updatedValue
-            // console.log(this.email);
+            this.email = updatedValue
         },
         updatePassword(updatedValue) {
             this.password = updatedValue
-            // console.log(this.password);
         }
     },
     created() {

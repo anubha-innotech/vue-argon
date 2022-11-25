@@ -81,6 +81,6 @@ export default {
   },
   beforeMount() {
     this.$store.state.isTransparent = "bg-transparent";
-  }
+  },
 };
 </script>
