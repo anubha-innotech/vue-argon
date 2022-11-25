@@ -9,12 +9,14 @@
 <button @click="listAllUsers()">users</button>
 </template>
 
-  
 <script>
 import UsersTable from "./components/UsersTable.vue";
 import {
-    getAuth
-} from 'firebase/auth'
+    getFirestore,
+    collection,
+    getDocs
+} from "firebase/firestore";
+
 export default {
     name: "tables",
     components: {
@@ -49,49 +51,15 @@ export default {
         };
     },
     methods: {
-        // async listAllUsers(nextPageToken) {
-        //     console.log(getAuth())
-        //     console.log(getAuth().listUsers)
-        //     const auth = getAuth();
-        //     console.log(auth);
-        //     console.log(auth.listUsers);
-        //     // List batch of users, 1000 at a time.
-        //     await auth
-        //         .listUsers(1000, nextPageToken)
-        //         ((listUsersResult) => {
-        //             listUsersResult.users.forEach((userRecord) => {
-        //                 console.log('user', userRecord.toJSON());
-        //             });
-        //          if (listUsersResult.pageToken) {
-        //                 // List next batch of users.
-        //                 // listAllUsers(listUsersResult.pageToken);
-        //             }
-        //         })
-        //         // catch((error) => {
-        //         //     console.log('Error listing users:', error);
-        //         // });
-        // }
 
-    listAllUsers(nextPageToken) {
-        // console.log(getAuth());
-        // console.log(getAuth.listUsers);
-  // List batch of users, 1000 at a time.
-  getAuth()
-    .listUsers(1000, nextPageToken)
-    .then((listUsersResult) => {
-        console.log(listUsersResult)
-    //   listUsersResult.users.forEach((userRecord) => {
-        // console.log('user', userRecord.toJSON());
-    //   });
-    //   if (listUsersResult.pageToken) {
-        // List next batch of users.
-        // listAllUsers(listUsersResult.pageToken);
-    //   }
-    })
-    .catch((error) => {
-      console.log('Error listing users:', error);
-    });
-}
+    },
+    created() {
+        const db = getFirestore()
+        const querySnapshot =  getDocs(collection(db, "users"));
+        console.log(querySnapshot);
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+        });
     }
 }
 </script>

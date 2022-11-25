@@ -66,7 +66,6 @@ import Spinner from "./components/Spinner.vue";
 import {
     getAuth,
     signInWithEmailAndPassword,
-
 } from 'firebase/auth'
 const body = document.getElementsByTagName("body")[0];
 
@@ -91,7 +90,6 @@ export default {
     methods: {
         handleSignin() {
             this.showLoading = true;
-            console.log(this.$store.state.showLoading);
             this.error = null;
             const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(

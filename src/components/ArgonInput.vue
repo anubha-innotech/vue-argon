@@ -73,7 +73,6 @@ export default {
     // },
     updateValue() {
       this.$emit('update-value',this.inputValue)
-      this.inputValue = ''
     }
   },
   created() {

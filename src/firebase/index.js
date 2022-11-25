@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 // import { getAuth } from "firebase/auth";
 import {
-  getFirestore, doc, setDoc
+  getFirestore
 } from "firebase/firestore"
 
 const firebaseConfig = {
@@ -18,17 +18,18 @@ initializeApp(firebaseConfig);
 // const auth = getAuth(app);
 // export { auth };
 const db  = getFirestore();
+export { db }
 
-const specialOfTheDay = doc(db, 'dailySpecial/2021-09-14')
-function writeDailySpecial() {
-  const docData = {
-    description : "A delicious vanilla latte",
-    price : 3.99
-  };
-  setDoc(specialOfTheDay,docData)
-}
-console.log("firestore");
-writeDailySpecial();
+// const specialOfTheDay = doc(db, 'dailySpecial/2021-09-14')
+// function writeDailySpecial() {
+//   const docData = {
+//     description : "A delicious vanilla latte",
+//     price : 3.99
+//   };
+//   setDoc(specialOfTheDay,docData)
+// }
+// console.log("firestore");
+// writeDailySpecial();
 
 // try {
 //   const docRef = addDoc(collection(db, "users"), {
