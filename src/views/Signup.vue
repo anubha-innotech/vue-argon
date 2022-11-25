@@ -151,20 +151,21 @@ export default {
             this.registered = false;
             const auth = getAuth();
             // console.log(this.name, this.email);
-            createUserWithEmailAndPassword(auth, this.email, this.password).then(
-                (userCredential) => {
+             createUserWithEmailAndPassword(auth, this.email, this.password).then(
+                async (userCredential) => {
                     const user = userCredential.user;
                     console.log(user.uid);
                     this.registered = true;
                     const db = getFirestore()
                     // Add a new document in collection "users"
                     try {
-                        const docRef = addDoc(collection(db, "users"), {
+                        const docRef = await addDoc(collection(db, "users"), {
                             name: this.name,
                             email: this.email,
                             password: this.password,
                             uid: user.uid,
-                            role: "user"
+                            role: "user",
+                            joined: new Date(),
                         });
                         console.log("Document written with ID: ", docRef.id);
                     } catch (e) {
